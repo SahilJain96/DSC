@@ -1,0 +1,27 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define MAX 1000005
+#define mod 1000000007
+long long f[ MAX ] , f1[ MAX ] ;
+int main( ) {
+    //freopen("in.txt","r",stdin) ;
+    //freopen("out.txt","w",stdout) ;
+	long long n , t ;
+	cin >> t >> n ;
+	f[0] = 0 ; f[1] = 0 ; f[2] = 1 ; f[3] = 0 ; f[4] = 1 ; f[5] = 1 ;
+	for( int i = 6 ; i <= n; i++ ) f[i] = (f[i-2] + f[i-5])%mod ;
+    int cur , k ;
+    while( t-- ) {
+        cin >> cur >> k ;
+        //if( k < 5) {cout << "k: " << k << endl ;return 0 ; }
+        if( (cur < k) || ( k == 2 ) || ( k == 5 )) cout << f[cur] << endl ;
+        else if( cur == k ) cout << (f[cur]+1)%mod << endl ;
+        else {
+            for( int i = 0 ; i <= k ; i++ ) f1[i] = f[i] ;
+            f1[k] = (f1[k]+1)%mod ;
+            for( int i = k+1 ; i <= cur ; i++ ) f1[i] = (f1[i-2] + f1[i-5] + f1[i-k])%mod ;
+            cout << f1[cur] << endl ;
+        }
+    }
+	return 0 ;
+}

@@ -1,0 +1,60 @@
+QUESTION
+---------
+Harit wants to climb ladder having n steps but he want to climb only in step of 2 and 5. Now he felt boring repeating same thing again and again. So he discovered new way, now each time Harit wants to climb in step of k also. In other words he can use steps of 2, 5 or k to climb the ladder. 
+So Harit want to calculate number of different ways to reach at cur step , where k and cur are integers . Although Harit is intelligent yet lazy so he wants your help to calculate number of ways. As number of ways could be too large so he wants you to output it modulo 1000000007 (10^9 + 7) .
+
+Input :
+First line consists two space separated integers t and n as number of test cases and total steps in ladder. Each of t lines contains two space separated integers cur and k .
+
+Output :
+For each test case output an integer calculated number of ways modulo (10^9 + 7) .
+
+Constraints
+1 <= t <= 100000
+1 <= n <= 1000000
+5 <= k <= 1000000000 
+cur <= n and sum of all cur such that ( cur >= k ) will not exceed 10000000 .
+
+SAMPLE INPUT 
+3 10
+6 7
+6 6
+9 7
+SAMPLE OUTPUT 
+1
+2
+5
+Explanation
+In first test case there is only 1 way to reach at 6th step i.e. taking step of (2,2,2) . In second test case there are 2 ways to reach at 6th step i.e. taking step of (2,2,2) or directly step of 6 in third test case there are 5 ways to reach at 9th step i.e taking step (2,2,5) , (2,5,2) , (5,2,2) , (2,7) , (7,2) .
+
+--------------------------------------------------------------------------------------------
+
+SOLUTION
+---------
+#include<bits/stdc++.h>
+using namespace std;
+#define MAX 1000005
+#define mod 1000000007
+long long f[ MAX ] , f1[ MAX ] ;
+int main( ) {
+    //freopen("in.txt","r",stdin) ;
+    //freopen("out.txt","w",stdout) ;
+	long long n , t ;
+	cin >> t >> n ;
+	f[0] = 0 ; f[1] = 0 ; f[2] = 1 ; f[3] = 0 ; f[4] = 1 ; f[5] = 1 ;
+	for( int i = 6 ; i <= n; i++ ) f[i] = (f[i-2] + f[i-5])%mod ;
+    int cur , k ;
+    while( t-- ) {
+        cin >> cur >> k ;
+        //if( k < 5) {cout << "k: " << k << endl ;return 0 ; }
+        if( (cur < k) || ( k == 2 ) || ( k == 5 )) cout << f[cur] << endl ;
+        else if( cur == k ) cout << (f[cur]+1)%mod << endl ;
+        else {
+            for( int i = 0 ; i <= k ; i++ ) f1[i] = f[i] ;
+            f1[k] = (f1[k]+1)%mod ;
+            for( int i = k+1 ; i <= cur ; i++ ) f1[i] = (f1[i-2] + f1[i-5] + f1[i-k])%mod ;
+            cout << f1[cur] << endl ;
+        }
+    }
+	return 0 ;
+}
